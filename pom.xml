@@ -22,6 +22,38 @@
             <artifactId>postgresql</artifactId>
             <version>42.7.4</version>
         </dependency>
+
+        <!-- JUnit 5 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.11.3</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Testcontainers: JUnit + PostgreSQL -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>1.20.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>1.20.2</version>
+            <scope>test</scope>
+        </dependency>
+
+  <!-- JDBC драйвер (обычно уже есть в runtime); оставлю на test тоже -->
+  <dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    <version>42.7.4</version>
+    <scope>test</scope>
+  </dependency>
+
+
     </dependencies>
 
     <build>
@@ -42,6 +74,15 @@
                 </executions>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <useSystemClassLoader>true</useSystemClassLoader>
+                </configuration>
+            </plugin>
+
             <!-- чтобы можно было указать main-класс в манифесте (необязательно) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -52,11 +93,31 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>dependency/</classpathPrefix>
-                            <mainClass>App</mainClass>
+                            <mainClass>ee.anton.quizgame.App</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
             </plugin>
+
+
+
+            <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-failsafe-plugin</artifactId>
+      <version>3.5.1</version>
+      <executions>
+        <execution>
+          <goals><goal>integration-test</goal><goal>verify</goal></goals>
+          <configuration>
+            <includes>
+              <include>**/*IT.java</include>
+            </includes>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+
+    
         </plugins>
     </build>
 

@@ -1,0 +1,4 @@
+=== Результаты проверки цен ===
+
+Ошибка при обработке https://kaup24.ee/et/moobel-ja-sisustus/kontorimoobel/arvutilaud-kirjutuslaud/huzaro-hero-18-must-mangulaud?id=9016165&navigation_source=interactionStudio&feat=product-viewed: HTTPSConnectionPool(host='kaup24.ee', port=443): Max retries exceeded with url: /et/moobel-ja-sisustus/kontorimoobel/arvutilaud-kirjutuslaud/huzaro-hero-18-must-mangulaud?id=9016165&navigation_source=interactionStudio&feat=product-viewed (Caused by ResponseError('too many 403 error responses'))
+
