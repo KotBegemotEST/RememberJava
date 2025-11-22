@@ -1,0 +1,24 @@
+# --- Java / Maven ---
+target/
+*.class
+*.log
+*.tmp
+hs_err_pid*
+dependency-reduced-pom.xml
+
+.idea/
+*.iml
+out/
+
+.vscode/
+.history/
+
+.DS_Store
+Thumbs.db
+
+.env
+.env.local
+docker-compose.override.yml
+
+*.bat.local
+*.sh.local

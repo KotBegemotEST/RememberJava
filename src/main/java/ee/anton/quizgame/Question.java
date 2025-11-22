@@ -47,7 +47,14 @@ public class Question {
      */
     public boolean inputAnswerToQuestion() {
         System.out.println("Please enter your answer: ");
-        String userAnswer = SCANNER.nextLine();
+        String userAnswer;
+        try {
+            userAnswer = SCANNER.nextLine();
+        } catch (java.util.NoSuchElementException ex) {
+            System.out.println("No input available. Exiting.");
+            System.exit(0);
+            return false;
+        }
         System.out.println("You entered: " + userAnswer);
         return inputAnswerToQuestion(userAnswer);
     }

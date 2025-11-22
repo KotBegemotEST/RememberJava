@@ -1,4 +1,3 @@
-// duplicate/legacy top-level App.java removed — the real application class is
-// in package ee.anton.quizgame
-// This file intentionally left blank to avoid duplicate-class compilation
-// errors.
+// Legacy top-level App placeholder. Application entrypoint is
+// `ee.anton.quizgame.WebApplication`. This file is intentionally
+// neutralized to avoid duplicate-class issues.

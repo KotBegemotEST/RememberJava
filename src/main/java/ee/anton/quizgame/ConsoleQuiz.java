@@ -2,6 +2,7 @@ package ee.anton.quizgame;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ConsoleQuiz {
@@ -19,7 +20,9 @@ public class ConsoleQuiz {
         if (this.questions == null || this.questions.isEmpty()) {
             return null;
         }
-        int idx = ThreadLocalRandom.current().nextInt(this.questions.size());
+        Random random = new Random();
+        int size = this.questions.size();
+        int idx = random.nextInt(size);
         return this.questions.get(idx);
     }
 

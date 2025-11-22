@@ -8,8 +8,10 @@ public class App {
         public static void main(String[] args) throws Exception {
                 DbQuestionRepository repo = new DbQuestionRepository();
                 List<Question> dbQuestions = repo.findAll();
+                ConsoleQuiz consoleQuiz = new ConsoleQuiz(dbQuestions);
                 while (true) {
-                        ConsoleQuiz consoleQuiz = new ConsoleQuiz(dbQuestions);
+
+                        System.out.println(consoleQuiz);
                         Question question = consoleQuiz.askQuestion();
                         if (question == null) {
                                 System.out.println("No questions available. Exiting.");

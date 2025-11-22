@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>QuizGame</title>
+  <style>
+    body{font-family:Segoe UI,Roboto,Arial,sans-serif;margin:24px}
+    .question{margin-bottom:16px}
+    .option{display:flex;gap:8px;align-items:center;margin:6px 0;padding:8px;background:#f3f3f3;border-radius:6px}
+    .empty{color:#888}
+    button{margin-top:12px;padding:8px 16px;border:none;border-radius:6px;background:#2563eb;color:#fff;cursor:pointer}
+    button:disabled{background:#bbb;cursor:not-allowed}
+  </style>
+</head>
+<body>
+  <h1>QuizGame</h1>
+  <div id="app">
+    <div id="status">Загружаем вопрос...</div>
+    <div id="question" style="display:none">
+      <div class="question" id="qtext"></div>
+      <div id="options"></div>
+      <button id="nextBtn" disabled>Следующий вопрос</button>
+    </div>
+  </div>
+
+  <script>
+    let questions = [];
+    let currentIndex = 0;
+    let selectedOption = null;
+
+    const statusEl = document.getElementById('status');
+    const questionWrapper = document.getElementById('question');
+    const questionText = document.getElementById('qtext');
+    const optionsDiv = document.getElementById('options');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function renderQuestion(index) {
+      const q = questions[index];
+      if (!q) {
+        statusEl.innerHTML = '<div class="empty">Вопросы закончились.</div>';
+        questionWrapper.style.display = 'none';
+        return;
+      }
+
+      selectedOption = null;
+      nextBtn.disabled = true;
+      questionText.textContent = q.questionText || q.questiontext || 'Вопрос без текста';
+      optionsDiv.innerHTML = '';
+
+      (q.options || []).forEach((opt, i) => {
+        const label = document.createElement('label');
+        label.className = 'option';
+
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = 'option';
+        radio.value = i;
+        radio.addEventListener('change', () => {
+          selectedOption = i;
+          nextBtn.disabled = false;
+        });
+
+        const text = document.createElement('span');
+        text.textContent = `${String.fromCharCode(65 + i)}) ${opt}`;
+
+        label.appendChild(radio);
+        label.appendChild(text);
+        optionsDiv.appendChild(label);
+      });
+
+      statusEl.textContent = '';
+      questionWrapper.style.display = '';
+    }
+
+    async function loadQuestions() {
+      statusEl.textContent = 'Загружаем вопрос...';
+      questionWrapper.style.display = 'none';
+      try {
+        const res = await fetch('/api/questions');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        questions = await res.json();
+        if (!Array.isArray(questions) || questions.length === 0) {
+          statusEl.innerHTML = '<div class="empty">Нет вопросов (проверь подключение к БД).</div>';
+          return;
+        }
+        currentIndex = 0;
+        renderQuestion(currentIndex);
+      } catch (e) {
+        statusEl.innerHTML = '<div class="empty">Ошибка загрузки: ' + e.message + '</div>';
+      }
+    }
+
+    nextBtn.addEventListener('click', () => {
+      if (selectedOption === null) {
+        return;
+      }
+      currentIndex += 1;
+      if (currentIndex >= questions.length) {
+        statusEl.innerHTML = '<div class="empty">Это был последний вопрос.</div>';
+        questionWrapper.style.display = 'none';
+      } else {
+        renderQuestion(currentIndex);
+      }
+    });
+
+    loadQuestions();
+  </script>
+</body>
+</html>
